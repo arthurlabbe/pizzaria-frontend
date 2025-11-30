@@ -4,7 +4,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { api } from "@/services/api";
 import { redirect } from "next/navigation";
-import { cookies } from "next/headers";
 import { loginSchema } from "@/lib/validation";
 
 export default function Page() {
@@ -29,22 +28,6 @@ export default function Page() {
         password,
       });
 
-      if (!response.data.token) {
-        return;
-      }
-
-      console.log(response.data);
-
-      const expressTime = 60 * 60 * 24 * 30;
-      const cookieStore = await cookies();
-
-      cookieStore.set("session", response.data.token, {
-        maxAge: expressTime,
-        path: "/",
-        secure: process.env.NODE_ENV === "production",
-        httpOnly: false,
-        sameSite: "lax",
-      });
     } catch (err) {
       console.log(err);
       return;
