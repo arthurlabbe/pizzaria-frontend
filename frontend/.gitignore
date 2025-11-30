@@ -18,7 +18,6 @@
 /.next/
 /out/
 .env
-copia.env
 
 # production
 /build
