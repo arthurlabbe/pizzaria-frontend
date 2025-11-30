@@ -1,0 +1,94 @@
+.containerCenter {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--yellow-light);
+}
+
+.logo {
+  width: 450px;
+  height: auto;
+  margin-bottom: -25px;
+}
+
+
+.login {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  width: 600px;
+
+  h1{
+    color: var(--black);
+    
+  }
+}
+
+.formulario {
+  color: var(--white);
+  padding-bottom: 16px;
+  font-size: 18px;
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  gap: 16px;
+}
+
+.formulario button {
+  height: 40px;
+  font-size: 16px;
+  background-color: var(--red-900);
+  border: 0;
+  border-radius: 8px;
+  color: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.5s;
+}
+
+form button:hover{
+  transform: scale(1.05);
+}
+
+.input, .input:focus, .input:active {
+  height: 40px;
+  border: 1px solid var(--brown);
+  padding: 0 16px;
+  border-radius: 8px;
+  background-color: var(--yellow-100) !important;
+  color: var(--black) !important;
+  font-size: 16px;
+}
+
+.input::placeholder {
+  color: rgb(102, 102, 102);
+}
+
+
+.text { 
+  color: var(--black);
+  text-decoration: none;
+  font-weight: bold;
+}
+
+@media(max-width: 620px) {
+  .login {
+    width: 90%;
+  }
+}
+
+
+.input:-webkit-autofill,
+.input:-webkit-autofill:hover,
+.input:-webkit-autofill:focus,
+.input:-webkit-autofill:active {
+  background-color: var(--yellow-100) !important;
+  box-shadow: 0 0 0px 1000px var(--yellow-100) inset !important;
+  -webkit-text-fill-color: var(--black) !important;
+  border-radius: 8px;
+}

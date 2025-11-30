@@ -1,0 +1,50 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    outline: 0;
+}
+
+:root {
+
+    --white: #fff;
+    --black: #000;
+
+    --yellow-light: #e7c67f;
+    --yellow-100: #f1eaa6;
+    --yellow-900: #cca349;
+    --gray-100:#a8a8a8;
+    --brown: #6a4a17;
+    --brown-900: #683213;
+    --red-900: #ff2c3a;
+}
+
+button {
+    cursor: pointer;
+}
+
+a {
+    color: inherit;
+    text-rendering: none;
+}
+
+body {
+    min-height: 100vh; 
+    background: var(--yellow-light);
+}
+
+body, input, textarea, select, button {
+    font: 400 1rem sans-serif;
+}
+
+@media (max-width: 720px){
+    html{
+        font-size: 87.5%;
+    }
+}
+
+@media (max-width: 1080px) {
+    html{
+        font-size: 93.75%
+    }
+}
