@@ -54,7 +54,7 @@ export function Form({ categories }: Props) {
     });
 
     if (!parsed.success) {
-      const [firstError] = parsed.error.errors;
+      const [firstError] = parsed.error.issues;
       toast.warning(firstError?.message || "Preencha todos os campos!");
       return;
     }
