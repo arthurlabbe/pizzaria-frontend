@@ -1,4 +1,5 @@
 export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 import { Orders } from "./components/orders/index";
 import { api } from "@/services/api";
