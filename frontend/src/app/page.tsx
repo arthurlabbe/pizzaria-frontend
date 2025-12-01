@@ -64,7 +64,7 @@ export default function Page() {
           </form>
 
           <Link href="/signup" className={styles.text}>
-            Nao possui uma conta? Cadastre-se
+            Não possui uma conta? Cadastre-se!
           </Link>
         </section>
       </div>

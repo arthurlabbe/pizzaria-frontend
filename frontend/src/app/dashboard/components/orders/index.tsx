@@ -30,7 +30,7 @@ export function Orders({ orders }: Props) {
     <>
       <main className={styles.container}>
         <section className={styles.containerHeader}>
-          <h1>Ultimos pedidos</h1>
+          <h1>Últimos pedidos</h1>
 
           <button onClick={handleRefresh}>
             <RefreshCw size={24} color="#6a4a17" />

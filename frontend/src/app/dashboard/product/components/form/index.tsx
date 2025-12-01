@@ -154,7 +154,7 @@ export function Form({ categories }: Props) {
 
         <textarea
           name="description"
-          placeholder="Digite a descricao do produto..."
+          placeholder="Digite a descriçao do produto..."
           required
           className={styles.input}
         ></textarea>
