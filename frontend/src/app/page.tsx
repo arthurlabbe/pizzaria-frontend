@@ -23,7 +23,7 @@ export default function Page() {
     const { email, password } = parseResult.data;
 
     try {
-      const response = await api.post("/session", {
+      await api.post("/session", {
         email,
         password,
       });

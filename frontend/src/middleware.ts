@@ -31,7 +31,7 @@ async function validateToken(token: string) {
 
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3333"}/me`,
+      `${process.env.NEXT_PUBLIC_API ?? "http://localhost:3333"}/me`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
