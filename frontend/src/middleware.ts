@@ -3,7 +3,12 @@ import { NextRequest, NextResponse } from "next/server";
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
-  if (pathname === "/" || pathname.startsWith("/_next") || pathname.startsWith("/favicon")) {
+  if (
+    pathname === "/" ||
+    pathname.startsWith("/_next") ||
+    pathname.startsWith("/favicon") ||
+    pathname.startsWith("/api")
+  ) {
     return NextResponse.next();
   }
 
@@ -16,6 +21,9 @@ export async function middleware(req: NextRequest) {
 
     try {
       const apiURL = process.env.NEXT_PUBLIC_API;
+      if (!apiURL) {
+        return NextResponse.next();
+      }
 
       const response = await fetch(`${apiURL}/me`, {
         method: "GET",
@@ -23,17 +31,19 @@ export async function middleware(req: NextRequest) {
           Cookie: `session=${session}`,
         },
         cache: "no-store",
-        credentials: "include",
       });
 
       if (!response.ok) {
-        return NextResponse.redirect(new URL("/", req.url));
+        if (response.status === 401) {
+          return NextResponse.redirect(new URL("/", req.url));
+        }
+        return NextResponse.next();
       }
 
       return NextResponse.next();
     } catch (err) {
-      console.log("Erro ao validar cookie:", err);
-      return NextResponse.redirect(new URL("/", req.url));
+      console.log("Erro ao validar cookie (middleware):", err);
+      return NextResponse.next();
     }
   }
 

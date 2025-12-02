@@ -6,6 +6,7 @@ import logoImg from "@/../public/bella-forneria.png";
 import Image from "next/image";
 import Link from "next/link";
 import { loginSchema } from "@/lib/validation";
+import { api } from "@/services/api";
 
 export default function Page() {
   const router = useRouter();
@@ -28,22 +29,13 @@ export default function Page() {
     const { email, password } = parseResult.data;
 
     try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API}/session`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email, password }),
-          credentials: "include",
-        }
-      );
+      const response = await api.post("/session", { email, password });
 
-      if (!response.ok) {
-        console.error("Falha no login");
-        return;
+      if (response.status === 200 || response.status === 201) {
+        router.push("/dashboard");
+      } else {
+        console.error("Falha no login", response.status);
       }
-
-      router.push("/dashboard");
     } catch (err) {
       console.error("Erro ao acessar API:", err);
     }
