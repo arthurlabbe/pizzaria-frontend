@@ -33,8 +33,8 @@ export default function Page() {
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          credentials: "include",
           body: JSON.stringify({ email, password }),
+          credentials: "include",
         }
       );
 

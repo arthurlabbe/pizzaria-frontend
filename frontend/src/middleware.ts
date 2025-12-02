@@ -3,46 +3,39 @@ import { NextRequest, NextResponse } from "next/server";
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
-  if (pathname.startsWith("/_next") || pathname === "/") {
+  if (pathname === "/" || pathname.startsWith("/_next") || pathname.startsWith("/favicon")) {
     return NextResponse.next();
   }
 
-  if (!pathname.startsWith("/dashboard")) {
-    return NextResponse.next();
-  }
+  if (pathname.startsWith("/dashboard")) {
+    const session = req.cookies.get("session")?.value;
 
-  const token = req.cookies.get("session")?.value;
+    if (!session) {
+      return NextResponse.redirect(new URL("/", req.url));
+    }
 
-  if (!token) {
-    return NextResponse.redirect(new URL("/", req.url));
-  }
+    try {
+      const apiURL = process.env.NEXT_PUBLIC_API;
 
-  const isValid = await validateToken(token);
-  console.log(isValid);
-
-  if (!isValid) {
-    return NextResponse.redirect(new URL("/", req.url));
-  }
-  return NextResponse.next();
-}
-
-async function validateToken(token: string) {
-  if (!token) return false;
-
-  try {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API ?? "http://localhost:3333"}/me`,
-      {
+      const response = await fetch(`${apiURL}/me`, {
+        method: "GET",
         headers: {
-          Authorization: `Bearer ${token}`,
+          Cookie: `session=${session}`,
         },
         cache: "no-store",
-      }
-    );
+        credentials: "include",
+      });
 
-    return response.ok;
-  } catch (err) {
-    console.log(err);
-    return false;
+      if (!response.ok) {
+        return NextResponse.redirect(new URL("/", req.url));
+      }
+
+      return NextResponse.next();
+    } catch (err) {
+      console.log("Erro ao validar cookie:", err);
+      return NextResponse.redirect(new URL("/", req.url));
+    }
   }
+
+  return NextResponse.next();
 }
