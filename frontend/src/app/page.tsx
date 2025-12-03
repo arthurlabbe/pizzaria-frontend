@@ -1,77 +1,79 @@
 ﻿"use client";
 
-import { useRouter } from "next/navigation";
+import { useState, FormEvent } from "react";
 import styles from "./page.module.scss";
-import logoImg from "@/../public/bella-forneria.png";
+import logoImg from "/public/logo.png";
 import Image from "next/image";
-import Link from "next/link";
-import { loginSchema } from "@/lib/validation";
 import { api } from "@/services/api";
+import { useRouter } from "next/navigation";
+import { setCookie } from "nookies";
 
-export default function Page() {
+export default function Home() {
   const router = useRouter();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  async function handleLogin(e: React.FormEvent) {
-    e.preventDefault();
+  async function handleLogin(event: FormEvent) {
+    event.preventDefault();
 
-    const form = new FormData(e.target as HTMLFormElement);
-
-    const parseResult = loginSchema.safeParse({
-      email: form.get("email"),
-      password: form.get("password"),
-    });
-
-    if (!parseResult.success) {
-      console.error(parseResult.error.flatten().formErrors);
+    if (email === "" || password === "") {
+      alert("Preencha todos os campos");
       return;
     }
 
-    const { email, password } = parseResult.data;
-
     try {
-      const response = await api.post("/session", { email, password });
+      setLoading(true);
 
-      if (response.status === 200 || response.status === 201) {
-        router.push("/dashboard");
-      } else {
-        console.error("Falha no login", response.status);
-      }
+      const response = await api.post("/session", {
+        email,
+        password,
+      });
+
+      const { token } = response.data;
+
+      setCookie(undefined, "session", token, {
+        maxAge: 60 * 60 * 24 * 30, // 30 dias
+        path: "/",
+      });
+
+      router.push("/dashboard");
+
     } catch (err) {
-      console.error("Erro ao acessar API:", err);
+      console.log(err);
+      alert("Erro ao acessar!"); 
+    } finally {
+      setLoading(false);
     }
   }
 
   return (
     <div className={styles.containerCenter}>
-      <Image src={logoImg} alt="Logo da pizzaria" className={styles.logo} />
+      <Image src={logoImg} alt="Logo Bella Forneria" />
 
-      <section className={styles.login}>
-        <form className={styles.formulario} onSubmit={handleLogin}>
+      <div className={styles.login}>
+        <form onSubmit={handleLogin}>
           <input
-            type="email"
-            required
-            name="email"
-            placeholder="Digite o seu email..."
+            placeholder="Digite seu email"
+            type="text"
             className={styles.input}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
 
           <input
+            placeholder="Sua senha"
             type="password"
-            required
-            name="password"
-            placeholder="Digite a sua senha..."
             className={styles.input}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
           />
 
-          <button type="submit" className={styles.button}>
-            Acessar
+          <button type="submit" className={styles.button} disabled={loading}>
+            {loading ? "Carregando..." : "Acessar"}
           </button>
         </form>
-
-        <Link href="/signup" className={styles.text}>
-          Não possui uma conta? Cadastre-se!
-        </Link>
-      </section>
+      </div>
     </div>
   );
 }
