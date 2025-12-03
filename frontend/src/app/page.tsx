@@ -2,7 +2,7 @@
 
 import { useState, FormEvent } from "react";
 import styles from "./page.module.scss";
-import logoImg from "/public/logo.png";
+import logoImg from "@/../public/bella-forneria.png";
 import Image from "next/image";
 import { api } from "@/services/api";
 import { useRouter } from "next/navigation";
