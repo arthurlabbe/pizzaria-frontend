@@ -4,6 +4,7 @@ import { useState, FormEvent } from "react";
 import styles from "./page.module.scss";
 import logoImg from "@/../public/bella-forneria.png";
 import Image from "next/image";
+import Link from "next/link";
 import { api } from "@/services/api";
 import { useRouter } from "next/navigation";
 import { setCookie } from "nookies";
@@ -49,10 +50,10 @@ export default function Home() {
 
   return (
     <div className={styles.containerCenter}>
-      <Image src={logoImg} alt="Logo Bella Forneria" />
+      <Image src={logoImg} alt="Logo Bella Forneria" className={styles.logo} />
 
       <div className={styles.login}>
-        <form onSubmit={handleLogin}>
+        <form onSubmit={handleLogin} className={styles.formulario}>
           <input
             placeholder="Digite seu email"
             type="text"
@@ -73,6 +74,9 @@ export default function Home() {
             {loading ? "Carregando..." : "Acessar"}
           </button>
         </form>
+        <Link href="/signup" className={styles.text}>
+           Não possui uma conta? Cadastra-se
+        </Link>
       </div>
     </div>
   );
